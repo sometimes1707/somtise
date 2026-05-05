@@ -188,7 +188,6 @@
 
 <div id="toast" class="toast">Уведомление</div>
 
-<!-- Галерея -->
 <div id="gallery-overlay">
     <button class="gal-btn gal-close" onclick="closeGallery()">
         <svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -260,7 +259,7 @@
     const SB_KEY = "sb_publishable_lh3WldQvvA1xWYzcGch6Gw_ruMccFKt"; 
     const sb = supabase.createClient(SB_URL, SB_KEY);
 
-    let user = "", userUID = "", secretKey = "";
+    let user = "", userUID = "", userPass = "";
     let currentChat = "vault", isVaultActive = true;
     let galleryImages = [];
     let currentGalIndex = 0;
@@ -270,10 +269,19 @@
         setTimeout(() => t.style.display = 'none', 2500);
     }
 
-    function encrypt(t) { return CryptoJS.AES.encrypt(t, secretKey).toString(); }
-    function decrypt(c) {
+    // НОВОЕ: Генерация ключа шифрования на основе ID собеседников
+    function getEncryptionKey(cid) {
+        if (isVaultActive) return userPass; // Для избранного используем пароль
+        return cid; // Для чатов используем ID чата (user1:user2) как общий секрет для простоты
+    }
+
+    function encrypt(t, cid) { 
+        return CryptoJS.AES.encrypt(t, getEncryptionKey(cid)).toString(); 
+    }
+
+    function decrypt(c, cid) {
         try { 
-            const bytes = CryptoJS.AES.decrypt(c, secretKey);
+            const bytes = CryptoJS.AES.decrypt(c, getEncryptionKey(cid));
             const original = bytes.toString(CryptoJS.enc.Utf8);
             return original || "[Зашифровано]"; 
         } catch(e) { return "[Зашифровано]"; }
@@ -300,7 +308,7 @@
             alert("Неверный пароль"); return; 
         }
 
-        user = login; secretKey = pass;
+        user = login; userPass = pass;
         document.getElementById('u-name').innerText = user;
         document.getElementById('u-avatar').innerText = user[0].toUpperCase();
         document.getElementById('u-id').innerText = "ID: " + userUID;
@@ -316,12 +324,10 @@
             const m = p.new;
             const cid = isVaultActive ? `vault:${userUID}` : [userUID, currentChat].sort().join(':');
             
-            // Если сообщение для текущего чата
             if(m.chat_id === cid) {
                 renderMsg(m, m.sender === userUID ? 'outgoing' : 'incoming');
             }
             
-            // Если сообщение нам от другого человека (не текущего) — обновить список вкладок
             if(m.chat_id.includes(userUID)) {
                 refreshChats();
             }
@@ -373,7 +379,7 @@
         await sb.from('messages').insert({ 
             chat_id: cid, 
             sender: userUID, 
-            content: encrypt("text:" + t) 
+            content: encrypt("text:" + t, cid) 
         });
         i.value = "";
     }
@@ -390,7 +396,7 @@
             const reader = new FileReader();
             reader.onload = async (e) => {
                 await sb.from('messages').insert({ 
-                    chat_id: cid, sender: userUID, content: encrypt("img:" + e.target.result) 
+                    chat_id: cid, sender: userUID, content: encrypt("img:" + e.target.result, cid) 
                 });
             };
             reader.readAsDataURL(file);
@@ -404,7 +410,7 @@
         const div = document.createElement('div');
         div.id = `m-${m.id}`; div.className = `message ${type}`;
         
-        const raw = decrypt(m.content);
+        const raw = decrypt(m.content, m.chat_id);
         const time = new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         
         if(raw.startsWith("img:")) {
