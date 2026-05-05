@@ -37,7 +37,7 @@
         .toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: #2c2c2e; color: white; padding: 10px 20px;
-            border-radius: 24px; font-size: 13px; display: none; z-index: 9999;
+            border-radius: 24px; font-size: 13px; display: none; z-index: 10000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
@@ -67,114 +67,112 @@
         .sidebar { width: 240px; background: var(--bg-panel); display: flex; flex-direction: column; padding: 20px; border-right: 1px solid var(--border-soft); }
         .avatar-box { width: 64px; height: 64px; background: var(--bg-item); border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--accent); }
         .u-name-label { font-weight: 600; text-align: center; }
-        .u-id-label { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 4px; cursor: pointer; }
-        .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+        .u-id-label { font-size: 11px; color: var(--text-secondary); text-align: center; margin: 4px 0 20px; cursor: pointer; }
+        
+        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; }
+        .nav-btn {
+            width: 100%; padding: 12px 14px; border-radius: 12px;
+            background: transparent; border: none; color: var(--text-primary);
+            display: flex; align-items: center; gap: 12px; font-size: 14px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .nav-btn:hover { background: var(--bg-item); }
+        .nav-btn svg { width: 18px; height: 18px; opacity: 0.7; }
+        .nav-btn.danger { color: var(--danger); }
+        .sidebar-footer { margin-top: auto; }
 
         /* Chat Area */
         .chat-area { flex: 1; display: flex; flex-direction: column; position: relative; }
-        .chat-header { height: 56px; padding: 0 20px; display: flex; align-items: center; background: var(--bg-panel); border-bottom: 1px solid var(--border-soft); }
+        .chat-header { height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; background: var(--bg-panel); border-bottom: 1px solid var(--border-soft); }
         .messages-container { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
         .message {
-            max-width: 75%; padding: 12px 16px; border-radius: 20px; font-size: 15px;
-            cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            position: relative; user-select: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            -webkit-user-select: none;
+            max-width: 75%; padding: 10px 14px; border-radius: 18px; font-size: 15px;
+            cursor: pointer; transition: transform 0.1s; position: relative;
         }
-        .message:hover { 
-            filter: brightness(1.1);
-            transform: translateY(-1px);
-        }
-        
+        .message:active { transform: scale(0.98); }
         .message.outgoing { background: var(--msg-out); align-self: flex-end; border-bottom-right-radius: 4px; }
         .message.incoming { background: var(--msg-in); align-self: flex-start; border-bottom-left-radius: 4px; }
         
-        .msg-text { word-break: break-word; line-height: 1.4; }
-        .msg-meta { font-size: 10px; opacity: 0.6; margin-top: 6px; display: flex; justify-content: flex-end; gap: 4px; }
-        .edited-mark { font-style: italic; opacity: 0.7; font-size: 10px; margin-left: 5px; }
+        .msg-img { max-width: 100%; border-radius: 12px; margin-bottom: 4px; display: block; }
+        .msg-text-content { word-break: break-word; line-height: 1.4; }
+        .msg-meta { font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right; }
+        .edited-mark { font-size: 10px; opacity: 0.6; margin-left: 5px; font-style: italic; }
 
         .input-box { padding: 16px 20px; background: var(--bg-deep); }
-        .input-wrapper { background: var(--bg-panel); border-radius: 16px; display: flex; padding: 4px 12px; align-items: center; gap: 8px; border: 1px solid var(--border-soft); }
-        .input-wrapper input { flex: 1; border: none; background: transparent; color: white; padding: 12px 0; font-size: 15px; }
+        .input-wrapper { background: var(--bg-panel); border-radius: 20px; display: flex; padding: 4px 8px; align-items: center; gap: 8px; border: 1px solid var(--border-soft); }
+        .input-wrapper input { flex: 1; border: none; background: transparent; color: white; padding: 12px 8px; font-size: 15px; }
 
-        /* Модальное меню - Исправлено появление */
+        .icon-btn { 
+            background: transparent; border: none; color: var(--text-secondary); 
+            cursor: pointer; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        }
+        .icon-btn:hover { background: var(--bg-item); color: white; }
+        .icon-btn svg { width: 20px; height: 20px; stroke-width: 2; }
+
+        /* Modal Menu */
         .modal { 
-            position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 9999; 
-            backdrop-filter: blur(8px);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); 
+            display: none; align-items: center; justify-content: center; 
+            z-index: 10000; backdrop-filter: blur(10px);
         }
-        
         .menu-card { 
-            background: var(--bg-panel); 
-            width: 280px; 
-            border-radius: 24px; 
-            overflow: hidden; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
-            border: 1px solid var(--border-soft);
-            animation: modalIn 0.2s ease-out;
+            background: var(--bg-panel); width: 280px; border-radius: 24px; 
+            overflow: hidden; border: 1px solid var(--border-soft);
+            animation: pop 0.2s cubic-bezier(0.17, 0.89, 0.32, 1.28);
         }
-        @keyframes modalIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .menu-item { 
-            width: 100%; padding: 16px 20px; 
-            border: none; background: transparent; 
-            color: white; text-align: left; 
-            font-size: 15px; cursor: pointer; 
-            display: flex; align-items: center; gap: 12px; 
-            border-bottom: 1px solid var(--border-soft);
+            width: 100%; padding: 16px 20px; border: none; background: transparent; 
+            color: white; text-align: left; font-size: 15px; cursor: pointer; 
+            display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-soft);
         }
         .menu-item:last-child { border-bottom: none; }
         .menu-item:active { background: var(--bg-item); }
         .menu-item.danger { color: var(--danger); }
-        .menu-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; opacity: 0.8; }
+        .menu-item svg { width: 18px; height: 18px; }
 
-        /* Auth Screen */
-        #auth-screen { position: fixed; inset: 0; background: var(--bg-deep); z-index: 3000; display: flex; align-items: center; justify-content: center; }
+        /* Auth */
+        #auth-screen { position: fixed; inset: 0; background: var(--bg-deep); z-index: 5000; display: flex; align-items: center; justify-content: center; }
         .auth-card { width: 320px; text-align: center; }
         .input-field { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 14px; border: 1px solid var(--border-soft); background: var(--bg-panel); color: white; font-size: 15px; }
 
-        .icon-btn { border: none; background: transparent; color: var(--text-secondary); cursor: pointer; padding: 8px; display: flex; }
-        .icon-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+        #gallery { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 11000; display: none; align-items: center; justify-content: center; }
+        #gallery img { max-width: 95%; max-height: 95%; object-fit: contain; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <div id="toast" class="toast"></div>
 
-<!-- Модальное меню сообщения -->
+<!-- Модальное меню -->
 <div id="msg-modal" class="modal" onclick="closeMenu()">
     <div class="menu-card" onclick="event.stopPropagation()">
         <button class="menu-item" onclick="copyMsgText()">
-            <svg viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             Копировать текст
         </button>
         <button class="menu-item" id="edit-btn" onclick="startEditMsg()">
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
             Изменить
         </button>
         <button class="menu-item danger" id="del-btn" onclick="deleteMsg()">
-            <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-            Удалить для всех
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Удалить у всех
         </button>
     </div>
 </div>
 
+<div id="gallery" onclick="this.style.display='none'"><img id="gal-img" src=""></div>
+
 <div id="auth-screen">
     <div class="auth-card">
-        <h2 style="font-size: 28px; margin-bottom: 24px; font-weight: 800;">Keyties</h2>
+        <h2 style="font-size: 32px; margin-bottom: 24px; font-weight: 800;">Keyties</h2>
         <input type="text" id="reg-login" class="input-field" placeholder="Логин">
         <input type="password" id="reg-pass" class="input-field" placeholder="Пароль">
-        <button class="input-field" style="background:var(--accent); border:none; font-weight:700; cursor:pointer;" onclick="initUser()">Войти или Создать</button>
-        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 20px;">Ваши данные шифруются на клиенте</p>
+        <button class="input-field" style="background:var(--accent); border:none; font-weight:700; cursor:pointer;" onclick="initUser()">Войти</button>
     </div>
 </div>
 
@@ -191,25 +189,36 @@
         <div class="avatar-box" id="u-avatar">?</div>
         <div id="u-name" class="u-name-label">...</div>
         <div id="u-id" class="u-id-label" onclick="copyId()">ID: ...</div>
-        <div class="sidebar-footer">
-            <button class="menu-item" id="fav-trigger" onclick="selectChat('vault', true)">
-                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        
+        <div class="sidebar-menu">
+            <button class="nav-btn" onclick="selectChat('vault', true)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 Избранное
             </button>
-            <button class="menu-item" onclick="location.reload()">Выйти</button>
+            <button class="nav-btn danger" onclick="location.reload()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Выйти
+            </button>
         </div>
     </div>
     
     <div class="chat-area">
         <div class="chat-header">
-            <div id="active-chat-title" style="font-weight:600;">Загрузка...</div>
+            <div id="active-chat-title" style="font-weight:600;">...</div>
+            <button class="icon-btn" id="del-chat-btn" onclick="deleteCurrentChat()" style="display:none; color:var(--danger);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
         </div>
         <div class="messages-container" id="chat-win"></div>
         <div class="input-box">
             <div class="input-wrapper">
-                <input type="text" id="msg-input" placeholder="Написать..." onkeypress="if(event.key==='Enter') sendText()">
+                <button class="icon-btn" onclick="document.getElementById('file-in').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <input type="file" id="file-in" hidden accept="image/*" onchange="uploadImg(this)">
+                <input type="text" id="msg-input" placeholder="Сообщение..." onkeypress="if(event.key==='Enter') sendText()">
                 <button class="icon-btn" style="color:var(--accent);" onclick="sendText()">
-                    <svg viewBox="0 0 24 24" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
             </div>
         </div>
@@ -223,29 +232,20 @@
 
     let user = "", userUID = "", userPass = "";
     let currentChat = "vault", isVaultActive = true;
-    let selectedMsgId = null;
-    let editMode = false;
+    let selectedMsgId = null, editMode = false;
 
     function showToast(m) {
-        const t = document.getElementById('toast'); 
-        t.innerText = m; 
-        t.style.display = 'block';
+        const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 2000);
     }
 
-    function getEncryptionKey(cid) { return isVaultActive ? userPass : cid; }
-    
-    function encrypt(t, cid) { 
-        return CryptoJS.AES.encrypt(t, getEncryptionKey(cid)).toString(); 
-    }
-
+    function getEncKey(cid) { return isVaultActive ? userPass : cid; }
+    function encrypt(t, cid) { return CryptoJS.AES.encrypt(t, getEncKey(cid)).toString(); }
     function decrypt(c, cid) {
         try { 
-            const b = CryptoJS.AES.decrypt(c, getEncryptionKey(cid));
-            const decoded = b.toString(CryptoJS.enc.Utf8);
-            if (!decoded) return "🔒 [Зашифровано]";
-            return decoded;
-        } catch(e) { return "🔒 [Ошибка ключа]"; }
+            const b = CryptoJS.AES.decrypt(c, getEncKey(cid));
+            return b.toString(CryptoJS.enc.Utf8) || "🔒 [Зашифровано]";
+        } catch(e) { return "🔒 [Ошибка]"; }
     }
 
     async function initUser() {
@@ -260,8 +260,7 @@
         if(!cloudUser) {
             await sb.from('users').insert({ username: login, password_hash: h, display_id: userUID });
         } else if(cloudUser.password_hash !== h) {
-            alert("Неверный пароль");
-            return;
+            alert("Неверный пароль"); return;
         }
 
         user = login; userPass = pass;
@@ -270,29 +269,22 @@
         document.getElementById('u-id').innerText = "ID: " + userUID;
         document.getElementById('auth-screen').classList.add('hidden');
         
-        startRealtime(); 
-        refreshChats(); 
-        selectChat('vault', true);
+        startRealtime(); refreshChats(); selectChat('vault', true);
     }
 
     function startRealtime() {
         sb.channel('msgs').on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, p => {
             const cid = isVaultActive ? `vault:${userUID}` : [userUID, currentChat].sort().join(':');
-            if(p.eventType === 'INSERT' && p.new.chat_id === cid) {
-                renderMsg(p.new, p.new.sender === userUID ? 'outgoing' : 'incoming');
-            }
-            if(p.eventType === 'DELETE') {
-                document.getElementById(`m-${p.old.id}`)?.remove();
-            }
+            if(p.eventType === 'INSERT' && p.new.chat_id === cid) renderMsg(p.new, p.new.sender === userUID ? 'outgoing' : 'incoming');
+            if(p.eventType === 'DELETE') document.getElementById(`m-${p.old.id}`)?.remove();
             if(p.eventType === 'UPDATE' && p.new.chat_id === cid) {
                 const el = document.getElementById(`m-${p.new.id}`);
                 if(el) {
                     const raw = decrypt(p.new.content, p.new.chat_id);
-                    el.querySelector('.msg-text-content').innerText = raw.replace("text:", "");
+                    if(raw.startsWith("text:")) el.querySelector('.msg-text-content').innerText = raw.replace("text:", "");
                     if(p.new.is_edited && !el.querySelector('.edited-mark')) {
-                        const mark = document.createElement('span'); 
-                        mark.className = 'edited-mark'; mark.innerText = '(изм.)';
-                        el.querySelector('.msg-text').appendChild(mark);
+                        const m = document.createElement('span'); m.className = 'edited-mark'; m.innerText = '(изм.)';
+                        el.querySelector('.msg-text-content').appendChild(m);
                     }
                 }
             }
@@ -316,6 +308,7 @@
         document.querySelectorAll('.friend-tab').forEach(t => t.classList.remove('active'));
         if(el) el.classList.add('active');
         document.getElementById('active-chat-title').innerText = isVaultActive ? "Избранное" : (name || id);
+        document.getElementById('del-chat-btn').style.display = isVaultActive ? 'none' : 'block';
         document.getElementById('chat-win').innerHTML = "";
         const cid = isVaultActive ? `vault:${userUID}` : [userUID, currentChat].sort().join(':');
         const { data } = await sb.from('messages').select('*').eq('chat_id', cid).order('created_at');
@@ -326,14 +319,13 @@
         const i = document.getElementById('msg-input');
         const t = i.value.trim(); if(!t) return;
         const cid = isVaultActive ? `vault:${userUID}` : [userUID, currentChat].sort().join(':');
-
         if(editMode && selectedMsgId) {
             await sb.from('messages').update({ content: encrypt("text:" + t, cid), is_edited: true }).eq('id', selectedMsgId);
             editMode = false; selectedMsgId = null;
         } else {
             await sb.from('messages').insert({ chat_id: cid, sender: userUID, content: encrypt("text:" + t, cid) });
         }
-        i.value = ""; i.placeholder = "Написать...";
+        i.value = ""; i.placeholder = "Сообщение...";
     }
 
     function renderMsg(m, type) {
@@ -341,63 +333,57 @@
         const win = document.getElementById('chat-win');
         const div = document.createElement('div');
         div.id = `m-${m.id}`; div.className = `message ${type}`;
-        
-        // Гарантированный обработчик клика
-        div.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openMenu(m.id, m.sender === userUID);
-        });
+        div.onclick = (e) => { e.stopPropagation(); openMenu(m.id, m.sender === userUID); };
 
         const raw = decrypt(m.content, m.chat_id);
-        const cleanText = raw.replace("text:", "");
-
-        const txtDiv = document.createElement('div');
-        txtDiv.className = 'msg-text';
-        
-        const contentSpan = document.createElement('span');
-        contentSpan.className = 'msg-text-content';
-        contentSpan.innerText = cleanText;
-        txtDiv.appendChild(contentSpan);
-
-        if(m.is_edited) {
-            const mark = document.createElement('span'); mark.className = 'edited-mark'; mark.innerText = '(изм.)';
-            txtDiv.appendChild(mark);
+        if(raw.startsWith("img:")) {
+            const img = document.createElement('img'); img.src = raw.replace("img:", ""); img.className = 'msg-img';
+            img.onclick = (e) => { e.stopPropagation(); document.getElementById('gal-img').src = img.src; document.getElementById('gallery').style.display='flex'; };
+            div.appendChild(img);
+        } else {
+            const txt = document.createElement('div'); txt.className = 'msg-text-content';
+            txt.innerText = raw.replace("text:", "");
+            if(m.is_edited) { const ed = document.createElement('span'); ed.className='edited-mark'; ed.innerText='(изм.)'; txt.appendChild(ed); }
+            div.appendChild(txt);
         }
 
-        const time = new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        const meta = document.createElement('div'); meta.className = 'msg-meta'; meta.innerText = time;
-        
-        div.appendChild(txtDiv); div.appendChild(meta); win.appendChild(div);
-        win.scrollTop = win.scrollHeight;
+        const meta = document.createElement('div'); meta.className = 'msg-meta';
+        meta.innerText = new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        div.appendChild(meta); win.appendChild(div); win.scrollTop = win.scrollHeight;
+    }
+
+    async function uploadImg(input) {
+        const file = input.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const cid = isVaultActive ? `vault:${userUID}` : [userUID, currentChat].sort().join(':');
+            await sb.from('messages').insert({ chat_id: cid, sender: userUID, content: encrypt("img:" + e.target.result, cid) });
+        };
+        reader.readAsDataURL(file);
     }
 
     function openMenu(id, isMine) {
         selectedMsgId = id;
-        const modal = document.getElementById('msg-modal');
-        modal.style.display = 'flex';
-        // Показываем кнопки редактирования только для своих сообщений
+        document.getElementById('msg-modal').style.display = 'flex';
         document.getElementById('edit-btn').style.display = isMine ? 'flex' : 'none';
         document.getElementById('del-btn').style.display = isMine ? 'flex' : 'none';
     }
 
-    function closeMenu() { 
-        document.getElementById('msg-modal').style.display = 'none'; 
-    }
+    function closeMenu() { document.getElementById('msg-modal').style.display = 'none'; }
 
     function copyMsgText() {
-        const text = document.getElementById(`m-${selectedMsgId}`).querySelector('.msg-text-content').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            showToast("Текст скопирован"); 
-            closeMenu();
-        });
+        const el = document.getElementById(`m-${selectedMsgId}`).querySelector('.msg-text-content');
+        if(el) { navigator.clipboard.writeText(el.innerText); showToast("Текст скопирован"); }
+        closeMenu();
     }
 
     function startEditMsg() {
-        const text = document.getElementById(`m-${selectedMsgId}`).querySelector('.msg-text-content').innerText;
-        const i = document.getElementById('msg-input');
-        i.value = text; i.focus(); 
-        i.placeholder = "Редактирование...";
-        editMode = true; 
+        const el = document.getElementById(`m-${selectedMsgId}`).querySelector('.msg-text-content');
+        if(el) { 
+            const i = document.getElementById('msg-input');
+            i.value = el.innerText.replace('(изм.)', ''); i.focus();
+            i.placeholder = "Редактирование..."; editMode = true;
+        }
         closeMenu();
     }
 
@@ -408,18 +394,25 @@
         }
     }
 
-    async function addNewFriendPrompt() {
-        const id = prompt("Введите ID собеседника:");
-        if(id) {
-            const { data } = await sb.from('users').select('username').eq('display_id', id).maybeSingle();
-            if(data) selectChat(id, false, null, data.username);
-            else showToast("Пользователь не найден");
+    async function deleteCurrentChat() {
+        if(confirm("Очистить историю этого чата для вас?")) {
+            const cid = [userUID, currentChat].sort().join(':');
+            await sb.from('messages').delete().eq('chat_id', cid);
+            document.getElementById('chat-win').innerHTML = "";
+            showToast("Чат очищен");
         }
     }
 
-    function copyId() { 
-        navigator.clipboard.writeText(userUID).then(() => showToast("Ваш ID скопирован"));
+    async function addNewFriendPrompt() {
+        const id = prompt("Введите ID:");
+        if(id) {
+            const { data } = await sb.from('users').select('username').eq('display_id', id).maybeSingle();
+            if(data) selectChat(id, false, null, data.username);
+            else showToast("Не найден");
+        }
     }
+
+    function copyId() { navigator.clipboard.writeText(userUID); showToast("ID скопирован"); }
 </script>
 </body>
 </html>
